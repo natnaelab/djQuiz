@@ -31,9 +31,7 @@ class QuizForm(BaseStyledModelForm):
         description_field = self.fields.get("description")
         title_field.widget.attrs["placeholder"] = "Enter Quiz Title"
         description_field.widget.attrs["class"] += " h-28"
-        description_field.widget.attrs["placeholder"] = (
-            "Description for your glourious quiz"
-        )
+        description_field.widget.attrs["placeholder"] = "Enter Description"
 
 
 class ChoiceForm(BaseStyledModelForm):

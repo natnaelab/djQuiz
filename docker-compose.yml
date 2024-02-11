@@ -11,7 +11,6 @@ services:
       - "8000:8000"
     depends_on:
       - db
-      - redis
     env_file:
       - .env
 
@@ -22,14 +21,7 @@ services:
       - pgdb:/var/lib/postgresql/data
     env_file:
       - .env
-  redis:
-    image: redis:7.2
-    container_name: redis
-    volumes:
-      - redis_data:/data
 
 volumes:
   pgdb:
-    external: false
-  redis_data:
     external: false
