@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    Create Quiz {{ quiz.title }}
+{% endblock title %}
+{% block content %}
+    <div class="py-8 flex justify-center">
+        <div class="max-w-lg">
+            <div class="my-4">
+                <p class="text-lg font-semibold">Question</p>
+                <hr>
+            </div>
+            <form class="w-full">
+                <div class="flex flex-col mb-3">{{ form.text }}</div>
+                <div class="flex flex-col mb-3">
+                    <p class="text-sm">{{ form.question_type.label }}</p>
+                    {{ form.question_type }}
+                </div>
+                <div class="my-4">
+                    <p class="text-lg font-semibold">Answer</p>
+                    <hr>
+                </div>
+                <div class="short-answer-field hidden">{{ form.correct_short_answer }}</div>
+                <div class="choice-field flex flex-col gap-3">
+                    <p class="text-sm">Choices</p>
+                    {% for ChoiceForm in form.ChoiceFormSet %}
+                        <div class="choice-form flex gap-2 items-center w-full">
+                            {{ ChoiceForm.text }}
+                            <div class="correct-check grow max-w-full">{{ ChoiceForm.is_correct }}</div>
+                            <div class="delete-choice">
+                                <button type="button"
+                                        id="remove-option"
+                                        class="text-gray-200 text-xs bg-sky-600/80 rounded-full h-4 w-4">x</button>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <button type="button"
+                        class="text-sky-700 underline underline-offset-2 self-start my-4 "
+                        id="add-option">+ Add option</button>
+                <hr class="mb-6">
+                <div class="flex gap-2">
+                    <button class="ms-auto w-fit rounded text-sm px-3 py-2 bg-gray-900/50 font-semibold text-white hover:bg-gray-900/70 transition-colors hover:shadow">
+                        Save & Add more question
+                    </button>
+                    <button class="w-fit rounded text-sm px-3 py-2 bg-sky-600 font-semibold text-white hover:bg-sky-800 transition-colors hover:shadow">
+                        Save & Complete
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

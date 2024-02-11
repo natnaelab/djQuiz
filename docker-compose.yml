@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: app
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+    env_file:
+      - .env
+
+  db:
+    image: postgres:16
+    container_name: pgdb
+    volumes:
+      - pgdb:/var/lib/postgresql/data
+    env_file:
+      - .env
+  redis:
+    image: redis:7.2
+    container_name: redis
+    volumes:
+      - redis_data:/data
+
+volumes:
+  pgdb:
+    external: false
+  redis_data:
+    external: false

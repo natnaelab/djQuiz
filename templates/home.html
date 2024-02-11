@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}
+    Home
+{% endblock title %}
+{% block content %}
+    <div class="p-12 flex justify-center">
+        <!-- <button class="bg-blue-800 text-white font-bold py-2 px-4 rounded border-b-4 hover:border-b-2 hover:border-t-2 border-blue-dark hover:border-blue">
+            Create new Quiz
+        </button> -->
+        <a class="bg-blue-600 hover:bg-blue-700 transition-colors duration-800 text-white font-bold py-2 px-4 rounded shadow"
+           href="/create-quiz/">Create new Quiz</a>
+    </div>
+{% endblock content %}
