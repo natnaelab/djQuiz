@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load quiz_tags %}
+{% block title %}
+    {{ quiz.title }}
+{% endblock title %}
+{% block content %}
+    <div class="p-8 mt-6 lg:ms-16">
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == 'success' %}
+                    <div class="messages bg-green-900/30 text-green-900 border border-green-700 rounded-lg px-4 py-2 flex gap-3 items-center mb-2">
+                        <i class="bi bi-check-circle"></i>
+                        <p>{{ message }}</p>
+                        <button class="underline ms-auto bi bi-x text-2xl"
+                                id="question-form-error-close"></button>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        <div class="bg-gray-100 rounded-lg p-3 border shadow">
+            <div class="flex flex-col gap-1">
+                <p class="text-3xl font-semibold">{{ quiz.title }}</p>
+                <p>{{ quiz.description }}</p>
+                {% if quiz.created_by == request.user %}
+                    <div class="flex gap-3">
+                        <a href="{% url 'quiz:edit-quiz' slug=quiz.slug %}"
+                           class="underline underline-offset-2 text-sm text-sky-500 font-semibold">
+                            <i class="bi bi-pen"></i>
+                        Edit Quiz</a>
+                        <button onclick="openModal('delete_quiz_modal')"
+                                class="underline underline-offset-2 text-sm text-red-500 font-semibold">
+                            <i class="bi bi-trash3"></i>
+                            Delete Quiz
+                        </button>
+                    </div>
+                    {% include "quiz/delete_quiz_modal.html" with quiz_title=quiz.title modal_id="delete_quiz_modal" %}
+                {% endif %}
+            </div>
+            <hr class="my-2">
+            <div class="flex gap-2 items-center">
+                <p class="font-semibold">
+                    By
+                    <i class="bi bi-person"></i>
+                    <a href="#"
+                       class="text-sky-600 underline underline-offset-2 cursor-pointer font-semibold">{{ quiz.created_by.username }}</a>
+                </p>
+                <p class="text-sm text-gray-300">|</p>
+                <p class="font-semibold">
+                    <i class="bi bi-question-circle"></i>
+                    {{ quiz.questions.count }}
+                    Questions
+                </p>
+                <p class="text-sm text-gray-300">|</p>
+                <p class="font-semibold">
+                    <i class="bi bi-stopwatch"></i>
+                    3m24s
+                    {% comment %} {{ quiz.total_duration|format_duration }} {% endcomment %}
+                </p>
+                <p class="text-sm text-gray-300">|</p>
+                <p class="font-semibold">
+                    <i class="bi bi-people"></i>
+                    {{ quiz.participants.count }} Participants
+                </p>
+            </div>
+        </div>
+        <br class="my-8">
+        <div class="flex gap-2">
+            {% if quiz.created_by == request.user %}
+                <a type="button"
+                   class="my-2 rounded-full bg-sky-600 py-2 px-4 text-lg text-sky-200 hover:bg-sky-700 transition-colors focus:outline-double focus:ring focus:ring-3 font-semibold"
+                   id="add-question-btn"
+                   href="{% url 'quiz:add-question' slug=quiz.slug %}">
+                    <i class="bi bi-plus-circle"></i>
+                    Add Question
+                </a>
+                <button onclick="openModal('take_quiz_modal')"
+                        hx-trigger="click"
+                        hx-get="{% url 'quiz:take-quiz' slug=quiz.slug %}"
+                        hx-target='#quiz-content'
+                        hx-swap="outerHTML"
+                        class="my-2 rounded-full bg-sky-300 py-2 px-4 text-lg text-sky-800 hover:bg-sky-500 transition-colors focus:outline-double focus:ring focus:ring-3 font-semibold">
+                    <i class="bi bi-play-circle"></i>
+                    Take Quiz
+                </button>
+            {% else %}
+                <button onclick="openModal('take_quiz_modal')"
+                        hx-trigger="click"
+                        hx-get="{% url 'quiz:take-quiz' slug=quiz.slug %}"
+                        hx-target='#quiz-content'
+                        hx-swap="outerHTML"
+                        class="my-2 rounded-full bg-sky-600 py-2 px-4 text-lg text-sky-200 hover:bg-sky-700 transition-colors focus:outline-double focus:ring focus:ring-3 font-semibold">
+                    <i class="bi bi-play-circle"></i>
+                    Take Quiz
+                </button>
+            {% endif %}
+            {% include "quiz/take_quiz_modal.html" with question=quiz.questions.first %}
+        </div>
+    </div>
+{% endblock content %}

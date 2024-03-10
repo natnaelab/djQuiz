@@ -1,0 +1,26 @@
+{% load quiz_tags %}
+<div id="quiz-content" class="modal-content p-4 w-full">
+    <div class="flex gap-4 my-16 mx-36">
+        <section class="w-3/4 flex flex-col border p-8 rounded"
+                 id="question"
+                 hx-get="{% url 'quiz:get-question' slug=quiz.slug %}"
+                 hx-swap="outerHTML"
+                 hx-trigger="revealed"
+                 _="on htmx:afterRequest startCountdown()">
+            {% comment %} question target {% endcomment %}
+        </section>
+        <section class="w-1/4 rounded border p-4" id="quiz-countdown">
+            <input type="hidden" name='countdown' value={{ quiz.time_limit }}>
+            <p id="countdown"
+               class="text-4xl font-bold text-gray-600 flex justify-center my-6 mb-8">
+                {{ quiz.time_limit|format_seconds }}
+            </p>
+            <hr class="mb-2">
+            <p class="font-semibold text-lg">{{ quiz.title }}</p>
+            <div class="flex">
+                <span class="border-gray-200 border"></span>
+                <p class="text-sm ms-2">{{ quiz.description }}</p>
+            </div>
+        </section>
+    </div>
+</div>

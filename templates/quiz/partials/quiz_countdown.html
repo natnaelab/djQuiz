@@ -1,0 +1,11 @@
+<section class="w-1/4 rounded border p-4" id="quiz-countdown">
+    <p id="countdown" class="text-4xl font- flex justify-center my-6 mb-8">{{ quiz.time_limit }}</p>
+    <p class="uppercase text-sm font-bold">Question 3/12</p>
+    <hr class="mb-2">
+    <p class="font-semibold text-lg">{{ quiz.title }}</p>
+    <div class="flex">
+        <span class="border-gray-200 border"></span>
+        <p class="text-sm ms-2">{{ quiz.description }}</p>
+    </div>
+    {% comment %} create countdown, every 5 seconds call quiz backend to register the countdown to db {% endcomment %}
+</section>

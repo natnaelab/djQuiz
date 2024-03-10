@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}
+    {{ quiz.title }}
+{% endblock title %}
+{% block content %}
+    <div class="p-8 mt-6 lg:ms-16">
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == 'success' %}
+                    <div class="messages bg-green-900/30 text-green-900 border rounded-lg px-4 py-2 flex gap-3 items-center mb-2">
+                        <i class="bi bi-check-circle"></i>
+                        <p>{{ message }}</p>
+                        <button class="underline ms-auto bi bi-x text-2xl"
+                                id="question-form-error-close"></button>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        <div class="flex items-center">
+            <div class="flex flex-col gap-1">
+                <p class="font-semibold text-2xl text-sky-950">{{ quiz.title }}</p>
+                <p class="text-sm">{{ quiz.description }}</p>
+                <div class="flex">
+                    <a class="bi bi-pen text-sky-700 text-sm underline"
+                       href="{% url 'quiz:edit-quiz' slug=quiz.slug %}">Edit quiz</a>
+                    <a class="ms-3 bi bi-trash text-red-700 text-sm underline" href="#">Delete quiz</a>
+                </div>
+            </div>
+            <div class="flex flex-col ms-auto w-fit gap-2">
+                <button class="ms-auto text-sm uppercase text-sky-600 underline"
+                        title="{% for participant in quiz.participants.all %}{{ participant }},{% endfor %}">
+                    {{ quiz.participants.count }} participants
+                </button>
+            </div>
+        </div>
+        <hr class="mt-2 mb-3">
+        <div class="questions mb-3 grid lg:grid-cols-2 sm:grid-cols-1 gap-4">
+            {% if quiz.questions.count %}
+                {% for question in quiz.questions.all %}
+                    <div class="shadow border rounded-lg p-3 mb-3 h-fit">
+                        <div class="flex flex-col">
+                            <p class="text-xl">{{ question }}</p>
+                            {% if question.question_type == 'MULTIPLE_CHOICE' %}
+                                <p class="text-xs uppercase font-semibold opacity-40">Multiple Choice</p>
+                                <hr class="mb-3">
+                                <div class="choice-row text-sm flex  flex-col gap-1">
+                                    {% for choice in question.choices.all %}
+                                        {% if choice.is_correct %}
+                                            <div class="bg-green-400/60 rounded p-1 ps-2 text-green-900 flex gap-2 font-semibold">
+                                                <p>{{ choice.text }}</p>
+                                                <p>(Correct)</p>
+                                            </div>
+                                        {% else %}
+                                            <div class="bg-gray-400/60 rounded p-1 ps-2 text-gray-900 flex gap-2 font-semibold">
+                                                <p>{{ choice.text }}</p>
+                                                <p>(Incorrect)</p>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {% if question.question_type == 'SHORT_ANSWER' %}
+                                <p class="text-xs uppercase font-semibold opacity-40">Short Answer</p>
+                                <hr class="my-2">
+                                <div class="flex gap-2 items-center">
+                                    <p class="font-semibold uppercase text-sm">Correct answer:</p>
+                                    <p>{{ question.correct_short_answer }}</p>
+                                </div>
+                            {% endif %}
+                            <hr class="my-2">
+                            <div class="flex gap-2">
+                                <button class="text-xs ms-auto bg-red-700 hover:bg-red-800 rounded w-fit p-1 text-white focus:ring-2 focus:ring-red-700/30">
+                                    <i class="bi bi-x"></i>
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-questions flex text-lg mt-6 mb-4">Quiz have no questions</div>
+            {% endif %}
+        </div>
+        <a type="button"
+           class="my-2 rounded-full bg-sky-600 py-2 px-4 text-sky-200 hover:bg-sky-700 transition-colors focus:outline-double focus:ring focus:ring-3 font-semibold"
+           id="add-question-btn"
+           href="{% url 'quiz:add-question' slug=quiz.slug %}">
+            <i class="bi bi-plus-circle"></i>
+            Add Question
+        </a>
+    </div>
+{% endblock content %}

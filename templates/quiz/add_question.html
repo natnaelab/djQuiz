@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}
+    Add Question
+{% endblock title %}
+{% block content %}
+    <div class="p-8 flex justify-center">
+        <div class="p-6 bg-gray-100 shadow rounded-lg lg:w-2/4 md:w-2/4 sm:w-3/4 overflow-auto border">
+            {% if choice_formset.non_form_errors %}
+                <div class="error-message bg-red-900/30 text-red-900 border-red-900/80 border rounded-lg px-4 py-2 flex gap-3 items-center mb-2">
+                    <i class="bi bi-exclamation-circle"></i>
+                    <p>{{ choice_formset.non_form_errors.0 }}</p>
+                    <button class="underline text-sm ms-auto" id="question-form-error-close">
+                        <i class="bi bi-x text-2xl"></i>
+                    </button>
+                </div>
+            {% endif %}
+            <p class="text-2xl font-semibold">Add Question</p>
+            <hr class="mb-4">
+            <form class="w-full" method="post" x-data="{ questionType: '' }">
+                {% csrf_token %}
+                <div class="flex flex-col mb-3">
+                    <p class="text-xs uppercase font-semibold">Question text</p>
+                    {{ question_form.text }}
+                </div>
+                <div class="flex flex-col mb-3">
+                    <p class="text-xs uppercase font-semibold">{{ question_form.question_type.label }}</p>
+                    {{ question_form.question_type }}
+                </div>
+                <hr class="my-2">
+                <div class="short-answer-field hidden mb-3">
+                    <p class="text-xs uppercase font-semibold">Answer</p>
+                    {{ question_form.correct_short_answer }}
+                    {% if question_form.errors.correct_short_answer %}
+                        <p class="text-sm text-red-600">
+                            <i class="bi bi-exclamation-circle"></i>
+                            {{ question_form.errors.correct_short_answer.0 }}
+                        </p>
+                    {% endif %}
+                </div>
+                <div class="choice-form-field flex flex-col">
+                    <p class="text-xs uppercase font-semibold">Choices</p>
+                    {{ choice_formset.management_form }}
+                    {% for form in choice_formset %}
+                        <div class="choice-form flex gap-3 items-center w-full mb-2">
+                            {{ form.text }}
+                            <div class="correct-check grow max-w-full">{{ form.is_correct }}</div>
+                            <div class="delete-choice hidden">
+                                <button type="button"
+                                        id="remove-option"
+                                        class="text-gray-800 items-center justify-center rounded-full h-4 w-4 bi bi-x text-xl">
+                                </button>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <button type="button"
+                            class="text-sky-700 underline underline-offset-2 self-start mb-3"
+                            id="add-option">+ Add option</button>
+                </div>
+                <hr class="mb-3">
+                <div class="explanation-field flex flex-col">
+                    <p class="text-xs uppercase font-semibold">{{ question_form.explanation.label }}</p>
+                    {{ question_form.explanation }}
+                </div>
+                <hr class="my-2">
+                <div class="duration-field">
+                    <p class="text-xs uppercase font-semibold">Countdown {{ question_form.duration.label }}</p>
+                    {{ question_form.duration }}
+                </div>
+                <hr class="mb-6 mt-3">
+                <div class="flex gap-2">
+                    <button class="ms-auto rounded px-3 py-2 bg-sky-600 hover:bg-sky-700 transition-colors focus:outline-double focus:ring focus:ring-3 font-bold text-white hover:shadow cursor-pointer"
+                            type="submit">
+                        <i class="bi bi-check"></i>
+                        Submit
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

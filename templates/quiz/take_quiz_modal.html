@@ -1,0 +1,10 @@
+{% load quiz_tags %}
+<div id="modal-backdrop"
+     class="fixed left-0 top-0 w-screen h-screen hidden bg-black/50"></div>
+<div id="take_quiz_modal"
+     class="fixed top-0 left-0 w-full h-full flex items-center justify-center hidden">
+     <div class="modal-dialog bg-white rounded shadow-lg w-full h-full">
+          <div id="quiz-content" class="modal-content p-4 w-full">{% comment %}  {% endcomment %}</div>
+          <button onclick="closeModal('take_quiz_modal')">close</button>
+     </div>
+</div>

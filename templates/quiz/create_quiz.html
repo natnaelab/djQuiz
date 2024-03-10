@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    Create Quiz
+{% endblock title %}
+{% block content %}
+    <div class="mt-16 flex justify-center">
+        <div class="rounded-lg p-6 mx-auto border shadow-sm bg-white">
+            <p class="form-title text-4xl font-semibold border-b mb-4">Create Quiz</p>
+            <form method="post"
+                  action="{% url 'quiz:create-quiz' %}"
+                  class="flex flex-col">
+                {% csrf_token %}
+                <div class="flex flex-col space-y-3 mb-3">
+                    <div class="flex flex-col">
+                        <p class="text-sm font-semibold uppercase">Title</p>
+                        {{ form.title }}
+                    </div>
+                    <div class="flex flex-col">
+                        <p class="text-sm font-semibold uppercase">Description</p>
+                        {{ form.description }}
+                    </div>
+                </div>
+                <button class="rounded w-fit ms-auto p-2 bg-sky-700 text-white font-semibold hover:bg-sky-800 transition-colors hover:shadow">
+                    <span class="flex gap-1">
+                        <i class="bi bi-arrow-right"></i>
+                        <span>Continue</span>
+                    </span>
+                </button>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

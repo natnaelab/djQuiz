@@ -14,7 +14,7 @@ SECRET_KEY = "django-insecure-s$msn7x3e1zv4y%$w0nvof)2kc_dgm*d1z@ydag8*cjeccymkv
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["djquiz.bwdev.xyz", "localhost"]
 
 
 # Application definition
